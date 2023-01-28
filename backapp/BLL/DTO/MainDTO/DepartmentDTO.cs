@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO
+namespace BLL.DTO.MainDTO
 {
     public class DepartmentDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Nullable<int> Tallowance { get; set; }
-        public Nullable<int> Mallowance { get; set; }
-        public Nullable<int> Leave { get; set; }
+
+        public string? Name { get; set; }
+
+        public int? Tallowance { get; set; }
+
+        public int? Mallowance { get; set; }
+
+        public int? Leave { get; set; }
     }
 }

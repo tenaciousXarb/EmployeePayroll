@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using BLL.DTO.FormDTO;
+using BLL.DTO.MainDTO;
 using DAL;
 using DAL.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -69,7 +65,7 @@ namespace BLL.Services
         public static bool Delete(int id)
         {
             var data = DataAccessFactory.EmployeeDataAccess().Delete(id);
-            if(data)
+            if (data)
             {
                 return true;
             }

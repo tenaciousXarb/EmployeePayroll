@@ -9,10 +9,10 @@ namespace DAL.Repo
 {
     internal class Repo
     {
-        protected EP_Project_DBEntities db;
+        protected EpProjectDbContext db;
         internal Repo()
         {
-            db = new EP_Project_DBEntities();
+            db = new EpProjectDbContext();
         }
     }
 }

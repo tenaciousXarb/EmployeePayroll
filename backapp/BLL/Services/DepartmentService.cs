@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using BLL.DTO;
+using BLL.DTO.MainDTO;
 using DAL;
 using DAL.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -16,9 +11,9 @@ namespace BLL.Services
         {
             var cfg = new MapperConfiguration
             (c =>
-                {
-                    c.CreateMap<DepartmentDTO, Department>().ReverseMap();
-                }
+            {
+                c.CreateMap<DepartmentDTO, Department>().ReverseMap();
+            }
             );
             var mapper = new Mapper(cfg);
             var data = mapper.Map<Department>(emp);

@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO
+namespace BLL.DTO.MainDTO
 {
     public class TokenDTO
     {
         public int Id { get; set; }
-        public string TKey { get; set; }
-        public Nullable<System.DateTime> CreationTime { get; set; }
-        public Nullable<System.DateTime> ExpirationTime { get; set; }
-        public string Username { get; set; }
-        public string Post { get; set; }
+
+        public string? Tkey { get; set; }
+
+        public DateTime? CreationTime { get; set; }
+
+        public DateTime? ExpirationTime { get; set; }
+
+        public string? Username { get; set; }
+
+        public string? Post { get; set; }
     }
 }

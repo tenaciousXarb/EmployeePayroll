@@ -1,16 +1,11 @@
 ﻿using DAL.EF;
-using DAL.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.Interfaces;
 
 namespace DAL.Repo
 {
     internal class AdminRepo : Repo, IRepo<Admin, int, Admin>, IAuth<Admin>
     {
-        public Admin Add(Admin obj)
+        public Admin? Add(Admin obj)
         {
             db.Admins.Add(obj);
             if (db.SaveChanges() > 0)
@@ -29,7 +24,8 @@ namespace DAL.Repo
 
         public List<Admin> Get()
         {
-            return db.Admins.ToList();
+            var adm = db.Admins.ToList();
+            return adm;
         }
 
         public Admin Get(int id)
@@ -41,14 +37,16 @@ namespace DAL.Repo
         {
             var dbpost = Get(obj.Id);
             db.Entry(dbpost).CurrentValues.SetValues(obj);
-            if (db.SaveChanges() > 0)
+            /*if (db.SaveChanges() > 0)
             {
                 return obj;
             }
-            return null;
+            return null;*/
+            db.SaveChanges();
+            return obj;
         }
 
-        public Admin Authenticate(string uname, string pass)
+        public Admin? Authenticate(string uname, string pass)
         {
             var obj = db.Admins.FirstOrDefault(x => x.Username.Equals(uname) && x.Password.Equals(pass));
             return obj;
@@ -56,8 +54,8 @@ namespace DAL.Repo
 
         public bool Logout(string token)
         {
-            var tk = db.Tokens.FirstOrDefault(x => x.TKey.Equals(token));
-            if(tk != null)
+            var tk = db.Tokens.FirstOrDefault(x => x.Tkey.Equals(token));
+            if (tk != null)
             {
                 tk.ExpirationTime = DateTime.Now;
                 db.SaveChanges();

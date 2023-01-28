@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO
+namespace BLL.DTO.MainDTO
 {
     public class AdminDTO
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+
+        public string? Username { get; set; }
+
+        public string? Password { get; set; }
     }
 }

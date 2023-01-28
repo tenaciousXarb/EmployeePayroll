@@ -1,8 +1,7 @@
 ﻿using DAL.EF;
-using DAL.Interface;
+using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,14 +33,14 @@ namespace DAL.Repo
         public Token Get(string id)
         {
             var book = (from b in db.Tokens
-                        where b.TKey == id
+                        where b.Tkey == id
                         select b).SingleOrDefault();
             return book;
         }
 
         public Token Update(Token obj)
         {
-            var dbpost = Get(obj.TKey);
+            var dbpost = Get(obj.Tkey);
             db.Entry(dbpost).CurrentValues.SetValues(obj);
             if (db.SaveChanges() > 0)
                 return obj;

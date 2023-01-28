@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using DAL.EF;
+using BLL.DTO.MainDTO;
 using DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.DTO;
+using DAL.EF;
 
 namespace BLL.Services
 {

@@ -1,12 +1,9 @@
 ﻿using DAL.EF;
-using DAL.Interface;
+using DAL.Interfaces;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,7 +16,7 @@ namespace DAL.Repo
             obj.Status = "Active";
             db.SaveChanges();
             db.Employees.Add(obj);
-            if (db.SaveChanges() > 0) 
+            if (db.SaveChanges() > 0)
                 return obj;
             return null;
         }
@@ -54,7 +51,7 @@ namespace DAL.Repo
             foreach (PropertyInfo prop in obj.GetType().GetProperties())
             {
                 var p = prop.GetValue(obj, null);
-                if(p != null)
+                if (p != null)
                 {
                     prop.SetValue(dbpost, p);
                 }
@@ -75,7 +72,7 @@ namespace DAL.Repo
 
         public bool Logout(string token)
         {
-            var tk = db.Tokens.FirstOrDefault(x => x.TKey.Equals(token));
+            var tk = db.Tokens.FirstOrDefault(x => x.Tkey.Equals(token));
             if (tk != null)
             {
                 tk.ExpirationTime = DateTime.Now;
