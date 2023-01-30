@@ -1,8 +1,10 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,40 +12,47 @@ namespace DAL.Repo
 {
     internal class TokenRepo : Repo, IRepo<Token, string, Token>
     {
-        public Token Add(Token obj)
+        public async Task<Token?> Add(Token obj)
         {
-            db.Tokens.Add(obj);
-            if (db.SaveChanges() > 0)
+            await db.Tokens.AddAsync(obj);
+            if (await db.SaveChangesAsync() > 0)
+            {
                 return obj;
+            }
             return null;
         }
 
-        public bool Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            var dbpost = Get(id);
-            db.Tokens.Remove(dbpost);
-            return db.SaveChanges() > 0;
+            var dbpost = await Get(id);
+            if (dbpost != null)
+            {
+                db.Tokens.Remove(dbpost);
+            }
+            return await db.SaveChangesAsync() > 0;
         }
 
-        public List<Token> Get()
+        public async Task<List<Token>?> Get()
         {
-            return db.Tokens.ToList();
+            return await db.Tokens.ToListAsync();
         }
 
-        public Token Get(string id)
+        public async Task<Token?> Get(string id)
         {
-            var book = (from b in db.Tokens
-                        where b.Tkey == id
-                        select b).SingleOrDefault();
-            return book;
+            return await db.Tokens.FirstOrDefaultAsync(x => x.Tkey == id);
         }
 
-        public Token Update(Token obj)
+        public async Task<Token?> Update(Token obj)
         {
-            var dbpost = Get(obj.Tkey);
-            db.Entry(dbpost).CurrentValues.SetValues(obj);
+            var dbpost = await Get(obj.Tkey?? throw new ArgumentNullException(nameof(obj.Tkey)));
+            if(dbpost != null)
+            {
+                db.Entry(dbpost).CurrentValues.SetValues(obj);
+            }
             if (db.SaveChanges() > 0)
+            {
                 return obj;
+            }
             return null;
         }
     }

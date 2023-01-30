@@ -7,7 +7,7 @@ namespace BLL.Services
 {
     public class DepartmentService
     {
-        public static DepartmentDTO AddDepartment(DepartmentDTO emp)
+        public static async Task<DepartmentDTO?> AddDepartment(DepartmentDTO obj)
         {
             var cfg = new MapperConfiguration
             (c =>
@@ -16,49 +16,49 @@ namespace BLL.Services
             }
             );
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Department>(emp);
-            var rt = DataAccessFactory.DepartmentDataAccess().Add(data);
+            var data = mapper.Map<Department>(obj);
+            var rt = await DataAccessFactory.DepartmentDataAccess().Add(data);
             if (rt != null)
             {
                 return mapper.Map<DepartmentDTO>(rt);
             }
             return null;
         }
-        public static List<DepartmentDTO> Get()
+        public static async Task<List<DepartmentDTO>?> Get()
         {
-            var data = DataAccessFactory.DepartmentDataAccess().Get();
+            var data = await DataAccessFactory.DepartmentDataAccess().Get();
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Department, DepartmentDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<DepartmentDTO>>(data);
         }
-        public static DepartmentDTO Get(int id)
+        public static async Task<DepartmentDTO?> Get(int id)
         {
-            var data = DataAccessFactory.DepartmentDataAccess().Get(id);
+            var data = await DataAccessFactory.DepartmentDataAccess().Get(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Department, DepartmentDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<DepartmentDTO>(data);
         }
-        public static DepartmentDTO Edit(DepartmentDTO emp)
+        public static async Task<DepartmentDTO?> Edit(DepartmentDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<DepartmentDTO, Department>().ReverseMap();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Department>(emp);
-            var rt = DataAccessFactory.DepartmentDataAccess().Update(data);
+            var data = mapper.Map<Department>(obj);
+            var rt = await DataAccessFactory.DepartmentDataAccess().Update(data);
             if (rt != null)
             {
                 return mapper.Map<DepartmentDTO>(rt);
             }
             return null;
         }
-        public static bool Delete(int id)
+        public static async Task<bool> Delete(int id)
         {
-            var data = DataAccessFactory.DepartmentDataAccess().Delete(id);
+            var data = await DataAccessFactory.DepartmentDataAccess().Delete(id);
             if (data)
             {
                 return true;

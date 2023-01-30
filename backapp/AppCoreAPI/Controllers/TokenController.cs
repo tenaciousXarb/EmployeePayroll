@@ -11,11 +11,11 @@ namespace AppCoreAPI.Controllers
     {
         [Route("api/tokens")]
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = TokenService.Get();
+                var data = await TokenService.Get();
                 if (data != null)
                 {
                     return Ok(data);
@@ -29,11 +29,11 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/tokens/{id}")]
         [HttpGet]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             try
             {
-                var data = TokenService.Get(id);
+                var data = await TokenService.Get(id);
                 if (data != null)
                 {
                     return Ok(data);
@@ -48,11 +48,11 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/tokens/delete/{id}")]
         [HttpGet]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                var data = TokenService.Delete(id);
+                var data = await TokenService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -66,11 +66,11 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/tokens/create")]
         [HttpPost]
-        public IActionResult Add(TokenDTO emp)
+        public async Task<IActionResult> Add(TokenDTO obj)
         {
             try
             {
-                var data = TokenService.AddToken(emp);
+                var data = await TokenService.AddToken(obj);
                 if (data != null)
                 {
                     return Ok(data);
@@ -84,11 +84,11 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/tokens/update")]
         [HttpPost]
-        public IActionResult Update(TokenDTO emp)
+        public async Task<IActionResult> Update(TokenDTO obj)
         {
             try
             {
-                var data = TokenService.Edit(emp);
+                var data = await TokenService.Edit(obj);
                 if (data != null)
                 {
                     return Ok(data);

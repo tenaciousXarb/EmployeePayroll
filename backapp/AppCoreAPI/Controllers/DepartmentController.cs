@@ -13,11 +13,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/departments")]
         [HttpGet]
         [Logged]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = DepartmentService.Get();
+                var data = await DepartmentService.Get();
                 if (data != null)
                 {
                     return Ok(data);
@@ -32,11 +32,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/departments/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var data = DepartmentService.Get(id);
+                var data = await DepartmentService.Get(id);
                 if (data != null)
                 {
                     return Ok(data);
@@ -51,11 +51,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/departments/delete/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var data = DepartmentService.Delete(id);
+                var data = await DepartmentService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -70,11 +70,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/departments/create")]
         [HttpPost]
         [Logged]
-        public IActionResult Add(DepartmentDTO emp)
+        public async Task<IActionResult> Add(DepartmentDTO obj)
         {
             try
             {
-                var data = DepartmentService.AddDepartment(emp);
+                var data = await DepartmentService.AddDepartment(obj);
                 if (data != null)
                 {
                     return Ok(data);
@@ -89,11 +89,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/departments/update")]
         [HttpPost]
         [Logged]
-        public IActionResult Update(DepartmentDTO emp)
+        public async Task<IActionResult> Update(DepartmentDTO obj)
         {
             try
             {
-                var data = DepartmentService.Edit(emp);
+                var data = await DepartmentService.Edit(obj);
                 if (data != null)
                 {
                     return Ok(data);

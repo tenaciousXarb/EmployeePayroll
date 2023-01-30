@@ -11,12 +11,12 @@ namespace AppCoreAPI.Controllers
     {
         [Route("api/logout")]
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             var token = Request.Headers.Authorization.ToString();
             if (token != null)
             {
-                var rs = AuthService.Logout(token);
+                var rs = await AuthService.Logout(token);
                 if (rs)
                 {
                     return Ok("Successfully logged out!");
@@ -26,12 +26,12 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/emp/logout")]
         [HttpGet]
-        public IActionResult EmpLogout()
+        public async Task<IActionResult> EmpLogout()
         {
             var token = Request.Headers.Authorization.ToString();
             if (token != null)
             {
-                var rs = AuthService.EmpLogout(token);
+                var rs = await AuthService.EmpLogout(token);
                 if (rs)
                 {
                     return Ok("Successfully logged out!");
@@ -41,52 +41,58 @@ namespace AppCoreAPI.Controllers
         }
         [Route("api/login")]
         [HttpPost]
-        public IActionResult Login(LoginDTO login)
+        public async Task<IActionResult> Login(LoginDTO login)
         {
             if (ModelState.IsValid)
             {
-                var token = AuthService.AuthenticateAdmin(login.Username, login.Password);
+                if(login.Username != null && login.Password != null)
+                {
+                    var token = await AuthService.AuthenticateAdmin(login.Username, login.Password);
 
-                if (token != null)
-                {
-                    try
+                    if (token != null)
                     {
-                        return Ok(token);
+                        try
+                        {
+                            return Ok(token);
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        return BadRequest(ex.Message);
+                        return BadRequest("Invalid username or password");
                     }
-                }
-                else
-                {
-                    return BadRequest("Invalid username or password");
                 }
             }
             return BadRequest(ModelState);
         }
         [Route("api/employee/login")]
         [HttpPost]
-        public IActionResult EmpLogin(LoginDTO login)
+        public async Task<IActionResult> EmpLogin(LoginDTO login)
         {
             if (ModelState.IsValid)
             {
-                var token = AuthService.AuthenticateEmployee(login.Username, login.Password);
-                if (token != null)
+                if (login.Username != null && login.Password != null)
                 {
-                    try
+                    var token = await AuthService.AuthenticateEmployee(login.Username, login.Password);
+                    if (token != null)
                     {
-                        return Ok(token);
+                        try
+                        {
+                            return Ok(token);
+                        }
+                        catch (Exception ex)
+                        {
+                            return BadRequest(ex.Message);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        return BadRequest(ex.Message);
+                        return BadRequest("Invalid username or password");
                     }
-                }
-                else
-                {
-                    return BadRequest("Invalid username or password");
-                }
+                }                    
             }
             return BadRequest(ModelState);
         }

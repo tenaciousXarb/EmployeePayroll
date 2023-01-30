@@ -1,5 +1,6 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,75 +12,72 @@ namespace DAL.Repo
 {
     internal class EmployeeRepo : Repo, IRepo<Employee, int, Employee>, IGet<Employee, string>, IAuth<Employee>
     {
-        public Employee Add(Employee obj)
+        public async Task<Employee?> Add(Employee obj)
         {
             obj.Status = "Active";
-            db.SaveChanges();
-            db.Employees.Add(obj);
-            if (db.SaveChanges() > 0)
-                return obj;
-            return null;
-        }
-
-        public bool Delete(int id)
-        {
-            var dbpost = Get(id);
-            db.Employees.Remove(dbpost);
-            return db.SaveChanges() > 0;
-        }
-
-        public List<Employee> Get()
-        {
-            return db.Employees.ToList();
-        }
-
-        public Employee GetByUsername(string name)
-        {
-            var ext = (from b in db.Employees
-                       where b.Username == name
-                       select b).SingleOrDefault();
-            return ext;
-        }
-        public Employee Get(int id)
-        {
-            return db.Employees.Find(id);
-        }
-
-        public Employee Update(Employee obj)
-        {
-            var dbpost = Get(obj.Id);
-            foreach (PropertyInfo prop in obj.GetType().GetProperties())
-            {
-                var p = prop.GetValue(obj, null);
-                if (p != null)
-                {
-                    prop.SetValue(dbpost, p);
-                }
-            }
-            db.Entry(dbpost).CurrentValues.SetValues(obj);
-            if (db.SaveChanges() > 0)
-            {
-                return obj;
-            }
-            return null;
-        }
-
-        public Employee Authenticate(string uname, string pass)
-        {
-            var obj = db.Employees.FirstOrDefault(x => x.Username.Equals(uname) && x.Password.Equals(pass) && x.Status.Equals("Active"));
+            await db.Employees.AddAsync(obj);
+            await db.SaveChangesAsync();
             return obj;
         }
 
-        public bool Logout(string token)
+        public async Task<bool> Delete(int id)
         {
-            var tk = db.Tokens.FirstOrDefault(x => x.Tkey.Equals(token));
+            var dbpost = await Get(id);
+            if(dbpost != null)
+            {
+                db.Employees.Remove(dbpost);
+            }
+            return await db.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<Employee>?> Get()
+        {
+            return await db.Employees.ToListAsync();
+        }
+
+        public async Task<Employee?> GetByUsername(string name)
+        {
+            return await (from b in db.Employees
+                       where b.Username == name
+                       select b).SingleOrDefaultAsync();
+        }
+        public async Task<Employee?> Get(int id)
+        {
+            return await db.Employees.FindAsync(id);
+        }
+
+        public async Task<Employee?> Update(Employee obj)
+        {
+            var dbpost = await Get(obj.Id);
+            if(dbpost != null)
+            {
+                foreach (PropertyInfo prop in obj.GetType().GetProperties())
+                {
+                    var p = prop.GetValue(obj, null);
+                    if (p != null)
+                    {
+                        prop.SetValue(dbpost, p);
+                    }
+                }
+                db.Entry(dbpost).CurrentValues.SetValues(obj);
+            }
+            await db.SaveChangesAsync();
+            return obj;
+        }
+
+        public async Task<Employee?> Authenticate(string uname, string pass)
+        {
+            return await db.Employees.FirstOrDefaultAsync(x => x.Username == uname && x.Password == pass);
+        }
+
+        public async Task<bool> Logout(string token)
+        {
+            var tk = await db.Tokens.FirstOrDefaultAsync(x => x.Tkey == token);
             if (tk != null)
             {
                 tk.ExpirationTime = DateTime.Now;
-                db.SaveChanges();
-                return true;
             }
-            return false;
+            return await db.SaveChangesAsync()>0;
         }
     }
 }

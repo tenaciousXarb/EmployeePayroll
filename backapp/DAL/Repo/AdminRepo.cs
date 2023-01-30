@@ -1,64 +1,65 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DAL.Repo
 {
     internal class AdminRepo : Repo, IRepo<Admin, int, Admin>, IAuth<Admin>
     {
-        public Admin? Add(Admin obj)
+        public async Task<Admin?> Add(Admin obj)
         {
-            db.Admins.Add(obj);
-            if (db.SaveChanges() > 0)
+            //db.Admins.Add(obj);
+            await db.Admins.AddAsync(obj);
+            if (await db.SaveChangesAsync() > 0)
             {
                 return obj;
             }
             return null;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var dbpost = Get(id);
-            db.Admins.Remove(dbpost);
-            return db.SaveChanges() > 0;
+            var obj = await Get(id);
+            if(obj != null)
+            {
+                db.Admins.Remove(obj);
+            }
+            return await db.SaveChangesAsync() > 0;
         }
 
-        public List<Admin> Get()
+        public async Task<List<Admin>?> Get()
         {
-            var adm = db.Admins.ToList();
-            return adm;
+            return await db.Admins.ToListAsync(); 
         }
 
-        public Admin Get(int id)
+        public async Task<Admin?> Get(int id)
         {
-            return db.Admins.Find(id);
+            //return await db.Admins.FirstOrDefaultAsync(i => i.Id == id);
+            return await db.Admins.FindAsync(id);
         }
 
-        public Admin Update(Admin obj)
+        public async Task<Admin?> Update(Admin obj)
         {
             var dbpost = Get(obj.Id);
             db.Entry(dbpost).CurrentValues.SetValues(obj);
-            /*if (db.SaveChanges() > 0)
-            {
-                return obj;
-            }
-            return null;*/
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return obj;
         }
 
-        public Admin? Authenticate(string uname, string pass)
+        public async Task<Admin?> Authenticate(string uname, string pass)
         {
-            var obj = db.Admins.FirstOrDefault(x => x.Username.Equals(uname) && x.Password.Equals(pass));
-            return obj;
+            return await db.Admins.FirstOrDefaultAsync(x => x.Username == uname && x.Password == pass);
         }
 
-        public bool Logout(string token)
+        public async Task<bool> Logout(string token)
         {
-            var tk = db.Tokens.FirstOrDefault(x => x.Tkey.Equals(token));
+            var tk =  await db.Tokens.FirstOrDefaultAsync(x => x.Tkey == token);
             if (tk != null)
             {
                 tk.ExpirationTime = DateTime.Now;
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 return true;
             }
             return false;

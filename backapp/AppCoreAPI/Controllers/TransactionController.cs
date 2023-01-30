@@ -13,15 +13,14 @@ namespace AppCoreAPI.Controllers
         [Route("api/transactions")]
         [HttpGet]
         [Logged]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = TransactionService.Get();
+                var data = await TransactionService.Get();
                 if (data != null)
                 {
-                    //return Ok(data);
-                    return Content("hello");
+                    return Ok(data);
                 }
                 return BadRequest("Not Found");
             }
@@ -33,11 +32,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/transactions/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var data = TransactionService.Get(id);
+                var data = await TransactionService.Get(id);
                 if (data != null)
                 {
                     return Ok(data);
@@ -52,11 +51,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/transactions/delete/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var data = TransactionService.Delete(id);
+                var data = await TransactionService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -71,11 +70,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/transactions/create")]
         [HttpPost]
         [Logged]
-        public IActionResult Add(TransactionDTO emp)
+        public async Task<IActionResult> Add(TransactionDTO obj)
         {
             try
             {
-                var data = TransactionService.AddTransaction(emp);
+                var data = await TransactionService.AddTransaction(obj);
                 if (data != null)
                 {
                     return Ok(data);
@@ -90,11 +89,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/transactions/update")]
         [HttpPost]
         [Logged]
-        public IActionResult Update(TransactionDTO emp)
+        public async Task<IActionResult> Update(TransactionDTO obj)
         {
             try
             {
-                var data = TransactionService.Edit(emp);
+                var data = await TransactionService.Edit(obj);
                 if (data != null)
                 {
                     return Ok(data);

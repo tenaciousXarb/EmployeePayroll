@@ -4,6 +4,6 @@ namespace DAL.Interfaces
 {
     public interface IGet<CLASS, ret>
     {
-        CLASS GetByUsername(ret name);
+        Task<CLASS?> GetByUsername(ret name);
     }
 }

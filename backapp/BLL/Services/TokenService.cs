@@ -7,57 +7,57 @@ namespace BLL.Services
 {
     public class TokenService
     {
-        public static TokenDTO AddToken(TokenDTO emp)
+        public static async Task<TokenDTO?> AddToken(TokenDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<TokenDTO, Token>();
                 c.CreateMap<Token, TokenDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Token>(emp);
-            var rt = DataAccessFactory.TokenDataAccess().Add(data);
+            var data = mapper.Map<Token>(obj);
+            var rt = await DataAccessFactory.TokenDataAccess().Add(data);
             if (rt != null)
             {
                 return mapper.Map<TokenDTO>(rt);
             }
             return null;
         }
-        public static List<TokenDTO> Get()
+        public static async Task<List<TokenDTO>?> Get()
         {
-            var data = DataAccessFactory.TokenDataAccess().Get();
+            var data = await DataAccessFactory.TokenDataAccess().Get();
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Token, TokenDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<TokenDTO>>(data);
         }
-        public static TokenDTO Get(string id)
+        public static async Task<TokenDTO?> Get(string id)
         {
-            var data = DataAccessFactory.TokenDataAccess().Get(id);
+            var data = await DataAccessFactory.TokenDataAccess().Get(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Token, TokenDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<TokenDTO>(data);
         }
-        public static TokenDTO Edit(TokenDTO emp)
+        public static async Task<TokenDTO?> Edit(TokenDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<TokenDTO, Token>();
                 c.CreateMap<Token, TokenDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Token>(emp);
-            var rt = DataAccessFactory.TokenDataAccess().Update(data);
+            var data = mapper.Map<Token>(obj);
+            var rt = await DataAccessFactory.TokenDataAccess().Update(data);
             if (rt != null)
             {
                 return mapper.Map<TokenDTO>(rt);
             }
             return null;
         }
-        public static bool Delete(string id)
+        public static async Task<bool> Delete(string id)
         {
-            var data = DataAccessFactory.TokenDataAccess().Delete(id);
+            var data = await DataAccessFactory.TokenDataAccess().Delete(id);
             if (data)
             {
                 return true;

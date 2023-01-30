@@ -13,16 +13,16 @@ namespace AppCoreAPI.Controllers
         [Route("api/admins")]
         [HttpGet]
         [Logged]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = AdminService.Get();
-                if(data.Count == 0)
+                var data = await AdminService.Get();
+                if(data != null)
                 {
-                    return UnprocessableEntity("No data");
+                    return Ok(data);
                 }
-                return Ok(data);
+                return UnprocessableEntity("No data");
             }
             catch (Exception ex)
             {
@@ -32,11 +32,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/admins/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var data = AdminService.Get(id);
+                var data = await AdminService.Get(id);
                 if(data != null)
                 {
                     return Ok(data);
@@ -51,11 +51,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/admins/delete/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var data = AdminService.Delete(id);
+                var data = await AdminService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -70,13 +70,13 @@ namespace AppCoreAPI.Controllers
         [Route("api/admins/create")]
         [HttpPost]
         [Logged]
-        public IActionResult Add(AdminDTO emp)
+        public async Task<IActionResult> Add(AdminDTO obj)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var data = AdminService.Edit(emp);
+                    var data = await AdminService.Edit(obj);
                     if (data != null)
                     {
                         return Ok(data); 
@@ -93,18 +93,21 @@ namespace AppCoreAPI.Controllers
         [Route("api/admins/update")]
         [HttpPost]
         [Logged]
-        public IActionResult Update(AdminDTO emp)
+        public async Task<IActionResult> Update(AdminDTO obj)
         {
-            if (emp.Password == null)
+            if (obj.Password == null)
             {
-                var s = AdminService.Get(emp.Id);
-                emp.Password = s.Password;
+                var s = await AdminService.Get(obj.Id);
+                if (s != null)
+                {
+                    obj.Password = s.Password;
+                }
             }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var data = AdminService.Edit(emp);
+                    var data = await AdminService.Edit(obj);
                     if (data != null)
                     {
                         return Ok(data);

@@ -12,62 +12,49 @@ namespace BLL.Services
 {
     public class AdminService
     {
-        public static AdminDTO AddAdmin(AdminDTO emp)
+        public static async Task<AdminDTO?> AddAdmin(AdminDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<AdminDTO, Admin>();
                 c.CreateMap<Admin, AdminDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Admin>(emp);
-            var rt = DataAccessFactory.AdminDataAccess().Add(data);
-            if (rt != null)
-            {
-                return mapper.Map<AdminDTO>(rt);
-            }
-            return null;
+            var data = mapper.Map<Admin>(obj);
+            var rt = await DataAccessFactory.AdminDataAccess().Add(data);
+            return mapper.Map<AdminDTO>(rt);
         }
-        public static List<AdminDTO> Get()
+        public static async Task<List<AdminDTO>?> Get()
         {
-            var data = DataAccessFactory.AdminDataAccess().Get();
+            var data = await DataAccessFactory.AdminDataAccess().Get();
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Admin, AdminDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<AdminDTO>>(data);
         }
-        public static AdminDTO Get(int id)
+        public static async Task<AdminDTO?> Get(int id)
         {
-            var data = DataAccessFactory.AdminDataAccess().Get(id);
+            var data = await DataAccessFactory.AdminDataAccess().Get(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Admin, AdminDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<AdminDTO>(data);
         }
-        public static AdminDTO Edit(AdminDTO emp)
+        public static async Task<AdminDTO?> Edit(AdminDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<AdminDTO, Admin>();
                 c.CreateMap<Admin, AdminDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Admin>(emp);
-            var rt = DataAccessFactory.AdminDataAccess().Update(data);
-            if (rt != null)
-            {
-                return mapper.Map<AdminDTO>(rt);
-            }
-            return null;
+            var data = mapper.Map<Admin>(obj);
+            var rt = await DataAccessFactory.AdminDataAccess().Update(data);
+            return mapper.Map<AdminDTO>(rt);
         }
-        public static bool Delete(int id)
+        public static async Task<bool> Delete(int id)
         {
-            var data = DataAccessFactory.AdminDataAccess().Delete(id);
-            if (data)
-            {
-                return true;
-            }
-            return false;
+            return await DataAccessFactory.AdminDataAccess().Delete(id);
         }
     }
 }

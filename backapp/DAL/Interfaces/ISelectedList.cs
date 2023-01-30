@@ -4,6 +4,6 @@ namespace DAL.Interfaces
 {
     public interface ISelectedList<CLASS, RET>
     {
-        List<CLASS> GetSelected(RET id);
+        Task<List<CLASS>?> GetSelected(RET id);
     }
 }

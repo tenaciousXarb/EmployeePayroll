@@ -6,20 +6,23 @@ namespace AppCoreAPI.Scheduler
 {
     public class Job : IJob
     {
-        public void Execute(IJobExecutionContext context)
+        public async void Execute(IJobExecutionContext context)
         {
-            var emps = EmployeeService.Get();
-            foreach (var e in emps)
+            var emps = await EmployeeService.Get();
+            if(emps != null)
             {
-                var post = new TransactionDTO()
+                foreach (var e in emps)
                 {
-                    EmpId = e.Id,
-                    Amount = e.Salary,
-                    Date = DateTime.Now,
-                    Month = DateTime.Now.ToString("MMMM"),
-                    AdminId = 1,
-                };
-                TransactionService.AddTransaction(post);
+                    var post = new TransactionDTO()
+                    {
+                        EmpId = e.Id,
+                        Amount = e.Salary,
+                        Date = DateTime.Now,
+                        Month = DateTime.Now.ToString("MMMM"),
+                        AdminId = 1,
+                    };
+                    await TransactionService.AddTransaction(post);
+                }
             }
         }
     }

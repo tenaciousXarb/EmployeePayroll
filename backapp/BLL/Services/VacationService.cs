@@ -12,7 +12,7 @@ namespace BLL.Services
 {
     public class VacationService
     {
-        public static VacationDTO AddVacation(VacationDTO emp)
+        public static async Task<VacationDTO?> AddVacation(VacationDTO obj)
         {
             var cfg = new MapperConfiguration(c =>
             {
@@ -20,14 +20,14 @@ namespace BLL.Services
                 c.CreateMap<Vacation, VacationDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Vacation>(emp);
-            var rt = DataAccessFactory.VacationDataAccess().Add(data);
+            var data = mapper.Map<Vacation>(obj);
+            var rt = await DataAccessFactory.VacationDataAccess().Add(data);
 
             return mapper.Map<VacationDTO>(rt);
         }
-        public static List<VacationDTO> Get()
+        public static async Task<List<VacationDTO>?> Get()
         {
-            var data = DataAccessFactory.VacationDataAccess().Get();
+            var data = await DataAccessFactory.VacationDataAccess().Get();
             var cfg = new MapperConfiguration(c =>
             {
                 c.CreateMap<Vacation, VacationDTO>();
@@ -36,9 +36,9 @@ namespace BLL.Services
 
             return mapper.Map<List<VacationDTO>>(data);
         }
-        public static VacationDTO Get(int id)
+        public static async Task<VacationDTO?> Get(int id)
         {
-            var data = DataAccessFactory.VacationDataAccess().Get(id);
+            var data = await DataAccessFactory.VacationDataAccess().Get(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Vacation, VacationDTO>();
             });
@@ -46,46 +46,49 @@ namespace BLL.Services
 
             return mapper.Map<VacationDTO>(data);
         }
-        public static VacationDTO Edit(VacationDTO emp, int value)
+        public static async Task<VacationDTO?> Edit(VacationDTO obj, int value)
         {
-            var e = EmployeeService.Get((int)emp.EmpId);
-            if (e.RemLeave >= emp.Nod)
+            if(obj.EmpId != null && obj.Nod != null)
             {
-                e.RemLeave = e.RemLeave - emp.Nod;
-                var ein = EmployeeService.Edit(e);
-            }
-            else
-            {
-                int diff = 0;
-                if (e.RemLeave > 0)
+                var e = await EmployeeService.Get((int)obj.EmpId) ?? throw new ArgumentNullException(nameof(EmployeeDTO));
+                if (e.RemLeave >= obj.Nod)
                 {
-                    diff = (int)(emp.Nod - e.RemLeave);
+                    e.RemLeave = e.RemLeave - obj.Nod;
+                    var ein = await EmployeeService.Edit(e);
                 }
                 else
                 {
-                    diff = (int)emp.Nod;
+                    int diff = 0;
+                    if (e.RemLeave > 0)
+                    {
+                        diff = (int)(obj.Nod - e.RemLeave);
+                    }
+                    else
+                    {
+                        diff = (int)obj.Nod;
+                    }
+                    e.RemLeave = e.RemLeave - obj.Nod;
+                    var ein = await EmployeeService.Edit(e);
+                    var post = new TransactionDTO()
+                    {
+                        EmpId = e.Id,
+                        Amount = (-100 * diff),
+                        Date = DateTime.Now,
+                        Month = DateTime.Now.ToString("MMMM"),
+                        AdminId = 1
+                    };
+                    await TransactionService.AddTransaction(post);
                 }
-                e.RemLeave = e.RemLeave - emp.Nod;
-                var ein = EmployeeService.Edit(e);
-                var post = new TransactionDTO()
-                {
-                    EmpId = e.Id,
-                    Amount = (-100 * diff),
-                    Date = DateTime.Now,
-                    Month = DateTime.Now.ToString("MMMM"),
-                    AdminId = 1
-                };
-                TransactionService.AddTransaction(post);
             }
             if (value == 1)
             {
-                emp.Status = "Approved";
+                obj.Status = "Approved";
             }
             else
             {
-                emp.Status = "Rejected";
+                obj.Status = "Rejected";
             }
-            emp.AdminId = 1;
+            obj.AdminId = 1;
 
             var cfg = new MapperConfiguration(c =>
             {
@@ -93,15 +96,14 @@ namespace BLL.Services
                 c.CreateMap<Vacation, VacationDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Vacation>(emp);
-            var rt = DataAccessFactory.VacationDataAccess().Update(data);
+            var data = mapper.Map<Vacation>(obj);
+            var rt = await DataAccessFactory.VacationDataAccess().Update(data);
 
             return mapper.Map<VacationDTO>(rt);
         }
-        public static bool Delete(int id)
+        public static async Task<bool> Delete(int id)
         {
-            var data = DataAccessFactory.VacationDataAccess().Delete(id);
-            return data;
+            return await DataAccessFactory.VacationDataAccess().Delete(id);
         }
     }
 }

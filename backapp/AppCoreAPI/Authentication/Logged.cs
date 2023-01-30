@@ -6,7 +6,7 @@ namespace AppCoreAPI.Authentication
 {
     public class Logged : Attribute, IAuthorizationFilter
     {
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public async void OnAuthorization(AuthorizationFilterContext context)
         {
             string? token = context.HttpContext.Request.Headers.Authorization;
 
@@ -16,7 +16,7 @@ namespace AppCoreAPI.Authentication
             }
             else
             {
-                var d = AuthService.IsTokenValid(token.ToString());
+                var d = await AuthService.IsTokenValid(token.ToString());
                 if (d == 0)
                 {
                     context.Result = new UnauthorizedResult();

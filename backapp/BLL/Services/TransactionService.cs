@@ -7,62 +7,57 @@ namespace BLL.Services
 {
     public class TransactionService
     {
-        public static TransactionDTO AddTransaction(TransactionDTO emp)
+        public static async Task<TransactionDTO?> AddTransaction(TransactionDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<TransactionDTO, Transaction>();
                 c.CreateMap<Transaction, TransactionDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Transaction>(emp);
-            var rt = DataAccessFactory.TransactionDataAccess().Add(data);
+            var data = mapper.Map<Transaction>(obj);
+            var rt = await DataAccessFactory.TransactionDataAccess().Add(data);
             if (rt != null)
             {
                 return mapper.Map<TransactionDTO>(rt);
             }
             return null;
         }
-        public static List<TransactionDTO> Get()
+        public static async Task<List<TransactionDTO>?> Get()
         {
-            var data = DataAccessFactory.TransactionDataAccess().Get();
+            var data = await DataAccessFactory.TransactionDataAccess().Get();
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Transaction, TransactionDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<TransactionDTO>>(data);
         }
-        public static List<TransactionDTO> Get(int id)
+        public static async Task<List<TransactionDTO>?> Get(int id)
         {
-            var data = DataAccessFactory.TransactionGetSelectedDataAccess().GetSelected(id);
+            var data = await DataAccessFactory.TransactionGetSelectedDataAccess().GetSelected(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Transaction, TransactionDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<TransactionDTO>>(data);
         }
-        public static TransactionDTO Edit(TransactionDTO emp)
+        public static async Task<TransactionDTO?> Edit(TransactionDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<TransactionDTO, Transaction>();
                 c.CreateMap<Transaction, TransactionDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Transaction>(emp);
-            var rt = DataAccessFactory.TransactionDataAccess().Update(data);
+            var data = mapper.Map<Transaction>(obj);
+            var rt = await DataAccessFactory.TransactionDataAccess().Update(data);
             if (rt != null)
             {
                 return mapper.Map<TransactionDTO>(rt);
             }
             return null;
         }
-        public static bool Delete(int id)
+        public static async Task<bool> Delete(int id)
         {
-            var data = DataAccessFactory.TransactionDataAccess().Delete(id);
-            if (data)
-            {
-                return true;
-            }
-            return false;
+            return await DataAccessFactory.TransactionDataAccess().Delete(id);
         }
     }
 }

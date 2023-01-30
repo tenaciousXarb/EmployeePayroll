@@ -4,7 +4,7 @@ namespace DAL.Interfaces
 {
     public interface IAuth<CLASS>
     {
-        CLASS Authenticate(string uname, string pass);
-        bool Logout(string token);
+        Task<CLASS?> Authenticate(string uname, string pass);
+        Task<bool> Logout(string token);
     }
 }

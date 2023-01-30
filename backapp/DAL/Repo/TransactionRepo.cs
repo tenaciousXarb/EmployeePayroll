@@ -1,5 +1,6 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,46 +11,49 @@ namespace DAL.Repo
 {
     internal class TransactionRepo : Repo, IRepo<Transaction, int, Transaction>, ISelectedList<Transaction, int>
     {
-        public Transaction Add(Transaction obj)
+        public async Task<Transaction?> Add(Transaction obj)
         {
-            db.Transactions.Add(obj);
-            if (db.SaveChanges() > 0)
-                return obj;
-            return null;
+            await db.Transactions.AddAsync(obj);
+            await db.SaveChangesAsync();
+            return obj;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var dbpost = Get(id);
-            db.Transactions.Remove(dbpost);
-            return db.SaveChanges() > 0;
+            var dbpost = await Get(id);
+            if (dbpost != null)
+            {
+                db.Transactions.Remove(dbpost);
+            }
+            return await db.SaveChangesAsync() > 0;
         }
 
-        public List<Transaction> Get()
+        public async Task<List<Transaction>?> Get()
         {
-            return db.Transactions.ToList();
+            return await db.Transactions.ToListAsync();
         }
 
-        public Transaction Get(int id)
+        public async Task<Transaction?> Get(int id)
         {
-            return db.Transactions.Find(id);
+            return await db.Transactions.FindAsync(id);
         }
 
-        public List<Transaction> GetSelected(int id)
+        public async Task<List<Transaction>?> GetSelected(int id)
         {
-            var ext = (from b in db.Transactions
+            return await (from b in db.Transactions
                        where b.EmpId == id
-                       select b).ToList();
-            return ext;
+                       select b).ToListAsync();
         }
 
-        public Transaction Update(Transaction obj)
+        public async Task<Transaction?> Update(Transaction obj)
         {
-            var dbpost = Get(obj.Id);
-            db.Entry(dbpost).CurrentValues.SetValues(obj);
-            if (db.SaveChanges() > 0)
-                return obj;
-            return null;
+            var dbpost = await Get(obj.Id);
+            if(dbpost != null)
+            {
+                db.Entry(dbpost).CurrentValues.SetValues(obj);
+            }
+            await db.SaveChangesAsync();
+            return obj;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BLL.Services
 {
     public class EmployeeService
     {
-        public static EmployeeDTO AddEmployee(EmployeeRegistrationDTO emp)
+        public static async Task<EmployeeDTO?> AddEmployee(EmployeeRegistrationDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<EmployeeRegistrationDTO, Employee>();
@@ -16,55 +16,55 @@ namespace BLL.Services
                 c.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Employee>(emp);
-            var rt = DataAccessFactory.EmployeeDataAccess().Add(data);
+            var data = mapper.Map<Employee>(obj);
+            var rt = await DataAccessFactory.EmployeeDataAccess().Add(data);
             return mapper.Map<EmployeeDTO>(rt);
         }
-        public static List<EmployeeDTO> Get()
+        public static async Task<List<EmployeeDTO>?> Get()
         {
-            var data = DataAccessFactory.EmployeeDataAccess().Get();
+            var data = await DataAccessFactory.EmployeeDataAccess().Get();
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<List<EmployeeDTO>>(data);
         }
-        public static EmployeeDTO GetByName(string name)
+        public static async Task<EmployeeDTO?> GetByName(string name)
         {
-            var data = DataAccessFactory.EmployeeGetDataAccess().GetByUsername(name);
+            var data = await DataAccessFactory.EmployeeGetDataAccess().GetByUsername(name);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<EmployeeDTO>(data);
         }
-        public static EmployeeDTO Get(int id)
+        public static async Task<EmployeeDTO?> Get(int id)
         {
-            var data = DataAccessFactory.EmployeeDataAccess().Get(id);
+            var data = await DataAccessFactory.EmployeeDataAccess().Get(id);
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cfg);
             return mapper.Map<EmployeeDTO>(data);
         }
-        public static EmployeeDTO Edit(EmployeeDTO emp)
+        public static async Task<EmployeeDTO?> Edit(EmployeeDTO obj)
         {
             var cfg = new MapperConfiguration(c => {
                 c.CreateMap<EmployeeDTO, Employee>();
                 c.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cfg);
-            var data = mapper.Map<Employee>(emp);
-            var rt = DataAccessFactory.EmployeeDataAccess().Update(data);
+            var data = mapper.Map<Employee>(obj);
+            var rt = await DataAccessFactory.EmployeeDataAccess().Update(data);
             if (rt != null)
             {
                 return mapper.Map<EmployeeDTO>(rt);
             }
             return null;
         }
-        public static bool Delete(int id)
+        public static async Task<bool> Delete(int id)
         {
-            var data = DataAccessFactory.EmployeeDataAccess().Delete(id);
+            var data = await DataAccessFactory.EmployeeDataAccess().Delete(id);
             if (data)
             {
                 return true;

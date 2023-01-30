@@ -14,14 +14,17 @@ namespace EmployeePayroll.Controllers
         [Route("api/employees")]
         [HttpGet]
         [Logged]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = EmployeeService.Get();
-                if(data.Count == 0)
+                var data = await EmployeeService.Get();
+                if(data != null)
                 {
-                    return BadRequest("No data");
+                    if (data.Count == 0)
+                    {
+                        return BadRequest("No data");
+                    }
                 }
                 return Ok(data);
             }
@@ -33,11 +36,11 @@ namespace EmployeePayroll.Controllers
         [Route("api/employees/getbyname/{name}")]
         [HttpGet]
         [Logged]
-        public IActionResult GetByName(string name)
+        public async Task<IActionResult> GetByName(string name)
         {
             try
             {
-                var data = EmployeeService.GetByName(name);
+                var data = await EmployeeService.GetByName(name);
                 if (data != null)
                 {
                     return Ok(data);
@@ -52,11 +55,11 @@ namespace EmployeePayroll.Controllers
         [Route("api/employees/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var data = EmployeeService.Get(id);
+                var data = await EmployeeService.Get(id);
                 if(data != null)
                 {
                     return Ok(data);
@@ -71,11 +74,11 @@ namespace EmployeePayroll.Controllers
         [Route("api/employees/delete/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var data = EmployeeService.Delete(id);
+                var data = await EmployeeService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -89,13 +92,13 @@ namespace EmployeePayroll.Controllers
         }
         [Route("api/employees/create")]
         [HttpPost]
-        public IActionResult Add([Bind(nameof(EmployeeRegistrationDTO.Name))] EmployeeRegistrationDTO emp)
+        public async Task<IActionResult> Add([Bind(nameof(EmployeeRegistrationDTO.Name))] EmployeeRegistrationDTO obj)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var data = EmployeeService.AddEmployee(emp);
+                    var data = await EmployeeService.AddEmployee(obj);
                     if (data != null)
                     {
                         return Ok(data);
@@ -113,41 +116,43 @@ namespace EmployeePayroll.Controllers
         [Route("api/employees/update")]
         [HttpPost]
         [Logged]
-        public IActionResult Update(EmployeeDTO emp)
+        public async Task<IActionResult> Update(EmployeeDTO obj)
         {
-            if (emp.Password == null)
+            var e = await EmployeeService.Get(obj.Id);
+            if(e != null)
             {
-                var e = EmployeeService.Get(emp.Id);
-                emp.Password = e.Password;
-                emp.Designation = e.Designation;
-                emp.Branch = e.Branch;
-                emp.DeptId = e.DeptId;
-                emp.Salary = e.Salary;
-                emp.RemLeave = e.RemLeave;
-                emp.Status = e.Status;
-            }
-            else
-            {
-                var e = EmployeeService.Get(emp.Id);
-                emp.Designation = e.Designation;
-                emp.Name = e.Name;
-                emp.Address = e.Address;
-                emp.Phone = e.Phone;
-                emp.Email = e.Email;
-                emp.City = e.City;
-                emp.Pincode = e.Pincode;
-                emp.Degree = e.Degree;
-                emp.Branch = e.Branch;
-                emp.DeptId = e.DeptId;
-                emp.Status = e.Status;
-                emp.Salary = e.Salary;
-                emp.BankAccount = e.BankAccount;
-                emp.Username = e.Username;
-                emp.RemLeave = e.RemLeave;
+                if (obj.Password == null)
+                {
+                    obj.Password = e.Password;
+                    obj.Designation = e.Designation;
+                    obj.Branch = e.Branch;
+                    obj.DeptId = e.DeptId;
+                    obj.Salary = e.Salary;
+                    obj.RemLeave = e.RemLeave;
+                    obj.Status = e.Status;
+                }
+                else
+                {
+                    obj.Designation = e.Designation;
+                    obj.Name = e.Name;
+                    obj.Address = e.Address;
+                    obj.Phone = e.Phone;
+                    obj.Email = e.Email;
+                    obj.City = e.City;
+                    obj.Pincode = e.Pincode;
+                    obj.Degree = e.Degree;
+                    obj.Branch = e.Branch;
+                    obj.DeptId = e.DeptId;
+                    obj.Status = e.Status;
+                    obj.Salary = e.Salary;
+                    obj.BankAccount = e.BankAccount;
+                    obj.Username = e.Username;
+                    obj.RemLeave = e.RemLeave;
+                }
             }
             if (ModelState.IsValid)
             {
-                var data = EmployeeService.Edit(emp);
+                var data = await EmployeeService.Edit(obj);
                 if (data != null)
                 {
                     try

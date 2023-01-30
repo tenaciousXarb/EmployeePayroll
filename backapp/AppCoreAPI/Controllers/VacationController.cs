@@ -13,11 +13,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/vacations")]
         [HttpGet]
         [Logged]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var data = VacationService.Get();
+                var data = await VacationService.Get();
                 if (data != null)
                 {
                     return Ok(data);
@@ -32,11 +32,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/vacations/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var data = VacationService.Get(id);
+                var data = await VacationService.Get(id);
                 if (data != null)
                 {
                     return Ok(data);
@@ -51,11 +51,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/vacations/delete/{id}")]
         [HttpGet]
         [Logged]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var data = VacationService.Delete(id);
+                var data = await VacationService.Delete(id);
                 if (data)
                 {
                     return Ok(data);
@@ -70,11 +70,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/vacations/create")]
         [HttpPost]
         [Logged]
-        public IActionResult Add(VacationDTO emp)
+        public async Task<IActionResult> Add(VacationDTO obj)
         {
             try
             {
-                var data = VacationService.AddVacation(emp);
+                var data = await VacationService.AddVacation(obj);
                 if (data != null)
                 {
                     return Ok(data);
@@ -89,11 +89,11 @@ namespace AppCoreAPI.Controllers
         [Route("api/vacations/update/{value}")]
         [HttpPost]
         [Logged]
-        public IActionResult Update(VacationDTO emp, int value)
+        public async Task<IActionResult> Update(VacationDTO obj, int value)
         {
             try
             {
-                var data = VacationService.Edit(emp, value);
+                var data = await VacationService.Edit(obj, value);
                 if (data != null)
                 {
                     return Ok(data);

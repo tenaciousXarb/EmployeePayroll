@@ -7,9 +7,9 @@ namespace BLL.Services
 {
     public class AuthService
     {
-        public static TokenDTO AuthenticateAdmin(string uname, string pass)
+        public static async Task<TokenDTO?> AuthenticateAdmin(string uname, string pass)
         {
-            var user = DataAccessFactory.AdminAuthDataAccess().Authenticate(uname, pass);
+            var user = await DataAccessFactory.AdminAuthDataAccess().Authenticate(uname, pass);
             if (user != null)
             {
                 var tk = new Token();
@@ -18,7 +18,7 @@ namespace BLL.Services
                 tk.ExpirationTime = null;
                 tk.Tkey = Guid.NewGuid().ToString();
                 tk.Post = "Admin";
-                var rttk = DataAccessFactory.TokenDataAccess().Add(tk);
+                var rttk = await DataAccessFactory.TokenDataAccess().Add(tk);
                 if (rttk != null)
                 {
                     var cfg = new MapperConfiguration(c => {
@@ -31,9 +31,9 @@ namespace BLL.Services
             }
             return null;
         }
-        public static TokenDTO AuthenticateEmployee(string uname, string pass)
+        public static async Task<TokenDTO?> AuthenticateEmployee(string uname, string pass)
         {
-            var user = DataAccessFactory.EmployeeAuthDataAccess().Authenticate(uname, pass);
+            var user = await DataAccessFactory.EmployeeAuthDataAccess().Authenticate(uname, pass);
             if (user != null)
             {
                 var tk = new Token();
@@ -42,7 +42,7 @@ namespace BLL.Services
                 tk.ExpirationTime = null;
                 tk.Tkey = Guid.NewGuid().ToString();
                 tk.Post = "Employee";
-                var rttk = DataAccessFactory.TokenDataAccess().Add(tk);
+                var rttk = await DataAccessFactory.TokenDataAccess().Add(tk);
                 if (rttk != null)
                 {
                     var cfg = new MapperConfiguration(c => {
@@ -55,9 +55,9 @@ namespace BLL.Services
             }
             return null;
         }
-        public static int IsTokenValid(string token)
+        public static async Task<int?> IsTokenValid(string token)
         {
-            var tk = DataAccessFactory.TokenDataAccess().Get(token);
+            var tk = await DataAccessFactory.TokenDataAccess().Get(token);
             if (tk == null)
             {
                 return 0;
@@ -68,13 +68,13 @@ namespace BLL.Services
             }
             return 2;
         }
-        public static bool Logout(string token)
+        public static async Task<bool> Logout(string token)
         {
-            return DataAccessFactory.AdminAuthDataAccess().Logout(token);
+            return await DataAccessFactory.AdminAuthDataAccess().Logout(token);
         }
-        public static bool EmpLogout(string token)
+        public static async Task<bool> EmpLogout(string token)
         {
-            return DataAccessFactory.EmployeeAuthDataAccess().Logout(token);
+            return await DataAccessFactory.EmployeeAuthDataAccess().Logout(token);
         }
     }
 }

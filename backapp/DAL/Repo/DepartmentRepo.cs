@@ -1,5 +1,6 @@
 ﻿using DAL.EF;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,38 +11,42 @@ namespace DAL.Repo
 {
     internal class DepartmentRepo : Repo, IRepo<Department, int, Department>
     {
-        public Department Add(Department obj)
+        public async Task<Department?> Add(Department obj)
         {
-            db.Departments.Add(obj);
-            if (db.SaveChanges() > 0)
+            await db.Departments.AddAsync(obj);
+            if (await db.SaveChangesAsync() > 0)
+            {
                 return obj;
+            }
             return null;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var dbpost = Get(id);
-            db.Departments.Remove(dbpost);
-            return db.SaveChanges() > 0;
+            var obj = await Get(id);
+            if (obj != null)
+            {
+                db.Departments.Remove(obj);
+            }
+            return await db.SaveChangesAsync() > 0;
         }
 
-        public List<Department> Get()
+        public async Task<List<Department>?> Get()
         {
-            return db.Departments.ToList();
+            return await db.Departments.ToListAsync();
         }
 
-        public Department Get(int id)
+        public async Task<Department?> Get(int id)
         {
-            return db.Departments.Find(id);
+            return await db.Departments.FindAsync(id);
         }
 
-        public Department Update(Department obj)
+        public async Task<Department?> Update(Department obj)
         {
             var dbpost = Get(obj.Id);
             db.Entry(dbpost).CurrentValues.SetValues(obj);
-            if (db.SaveChanges() > 0)
-                return obj;
-            return null;
+            await db.SaveChangesAsync();
+            return obj;
         }
     }
 }
