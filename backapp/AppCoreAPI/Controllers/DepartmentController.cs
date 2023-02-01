@@ -10,9 +10,10 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class DepartmentController : ControllerBase
     {
+        #region all departments api
         [Route("api/departments")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get()
         {
             try
@@ -29,9 +30,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region single department api
         [Route("api/departments/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -48,9 +53,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region delete department api
         [Route("api/departments/delete/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -67,9 +76,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region add department api
         [Route("api/departments/create")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Add(DepartmentDTO obj)
         {
             try
@@ -86,9 +99,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region update department api
         [Route("api/departments/update")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Update(DepartmentDTO obj)
         {
             try
@@ -107,6 +124,7 @@ namespace AppCoreAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        } 
+        #endregion
     }
 }

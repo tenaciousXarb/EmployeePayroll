@@ -14,7 +14,6 @@ namespace BLL.DTO.FormDTO
         [Required]
         public string? Address { get; set; }
         [Required]
-        [NameValidator("Address", ErrorMessage = "No way!")]
         public string? City { get; set; }
         [Required]
         public string? Pincode { get; set; }
@@ -24,6 +23,7 @@ namespace BLL.DTO.FormDTO
         [Display(Name = "Bank Account")]
         public string? BankAccount { get; set; }
         [Required]
+        [Unique(ErrorMessage = "Username has to be unique!")]
         public string? Username { get; set; }
         [Required]
         public string? Password { get; set; }

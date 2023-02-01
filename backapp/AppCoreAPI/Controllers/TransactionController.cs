@@ -10,9 +10,10 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class TransactionController : ControllerBase
     {
+        #region all transactions api
         [Route("api/transactions")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get()
         {
             try
@@ -29,9 +30,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region single transaction api
         [Route("api/transactions/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -48,9 +53,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region delete transaction api
         [Route("api/transactions/delete/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -67,9 +76,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region add transaction api
         [Route("api/transactions/create")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Add(TransactionDTO obj)
         {
             try
@@ -86,9 +99,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region update transaction api
         [Route("api/transactions/update")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Update(TransactionDTO obj)
         {
             try
@@ -104,6 +121,7 @@ namespace AppCoreAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        } 
+        #endregion
     }
 }

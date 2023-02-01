@@ -11,6 +11,7 @@ instance.interceptors.request.use(
     (config)=>
     {
         config.headers["Authorization"] = localStorage.getItem('_authToken');
+        config.headers["Allow"] = localStorage.getItem('role');
         return config;
     },
     (err)=>
@@ -30,6 +31,16 @@ instance.interceptors.response.use(
         {
             localStorage.clear();
             window.location.href="/";
+            /*console.log(err.response.headers.get("Allow"));
+            if(err.response.headers.get("Allow"))
+            {
+                err.response.headers.Allow == "employee" ? window.location.href="/employee/home" : window.location.href="/admins/show"
+            }
+            else
+            {
+                localStorage.clear();
+                window.location.href="/";
+            }*/
         }
         return Promise.reject(err);
     }

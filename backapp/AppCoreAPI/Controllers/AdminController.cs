@@ -10,15 +10,16 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class AdminController : ControllerBase
     {
+        #region all admin api
         [Route("api/admins")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var data = await AdminService.Get();
-                if(data != null)
+                if (data != null)
                 {
                     return Ok(data);
                 }
@@ -29,15 +30,19 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region single admin api
         [Route("api/admins/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var data = await AdminService.Get(id);
-                if(data != null)
+                if (data != null)
                 {
                     return Ok(data);
                 }
@@ -48,9 +53,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region delete admin api
         [Route("api/admins/delete/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -67,9 +76,13 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region add admin api
         [Route("api/admins/create")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Add(AdminDTO obj)
         {
             if (ModelState.IsValid)
@@ -79,7 +92,7 @@ namespace AppCoreAPI.Controllers
                     var data = await AdminService.Edit(obj);
                     if (data != null)
                     {
-                        return Ok(data); 
+                        return Ok(data);
                     }
                     return BadRequest("Not found");
                 }
@@ -90,9 +103,13 @@ namespace AppCoreAPI.Controllers
             }
             return BadRequest(ModelState);
         }
+        #endregion
+
+
+        #region update admin api
         [Route("api/admins/update")]
         [HttpPost]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Update(AdminDTO obj)
         {
             if (obj.Password == null)
@@ -120,6 +137,7 @@ namespace AppCoreAPI.Controllers
                 }
             }
             return BadRequest(ModelState);
-        }
+        } 
+        #endregion
     }
 }

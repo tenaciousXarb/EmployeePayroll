@@ -3,7 +3,6 @@ import AddAdmin from './Admin/AddAdmin';
 import AdminLogout from './Admin/AdminLogout';
 import PagAllAdmin from './Admin/PagAllAdmin';
 import AddLeave from './Employee/AddLeave';
-import CreateCourse from './Employee/CreateCourse';
 import EmpHome from './Employee/EmpHome';
 import AddEmployee from './Universal/AddEmployee';
 import Login from './Admin/Login';
@@ -51,35 +50,7 @@ const Main=()=>
                     <Route path="/employee/changepassword" element={<ChangePassword/>}></Route>
                     <Route path="/employee/leaveapplication" element={<AddLeave/>}></Route>
                     <Route path="/employee/home" element={<EmpHome/>}></Route>
-                    {//<Route path="/employee/home/:name" element={<EmpHome/>}></Route>
-                    }
                     <Route path="/employees/logout" element={<EmpLogout/>}></Route>
-                    {/*
-                    <Route path="/tutorhome" element={<TutorHome/>}></Route>
-                    <Route path="/tutorlogin" element={<TutorLogin/>}></Route>
-                    <Route path="/betutor" element={<CreateTutor/>}></Route>
-                    <Route path="/mytutorprofile" element={<MyProfile/>}></Route>
-                    <Route path="/tutoreditprofile" element={<MyProfileEdit/>}></Route>
-                    <Route path="/tutorpasswordchange" element={<UpdatePassword/>}></Route>
-                    <Route path="/jobboard" element={<PagJobBoard/>}></Route>
-                    <Route path="/tutormyjobs" element={<PagMyJobBoard/>}></Route>
-                    <Route path="/tutorfeedbacks" element={<PagMyFeedbacks/>}></Route>
-                    <Route path="/tutorstats" element={<BarChart/>}></Route>
-                    <Route path="/forgotpw" element={<ForgotPassword/>}></Route>
-                    <Route path="/fpws" element={<SendOtp/>}></Route>
-                    <Route path="/fpnp" element={<AddNewPassword/>}></Route>
-                    
-                    <Route path="/edittutor/:id" element={<UpdateTutor/>}></Route>
-                    <Route path="/tutorpwchange" element={<PasswordChange/>}></Route>
-                    
-                    <Route path="/tutorcourses" element={<Courses/>}></Route>
-                    <Route path="/tutorcourses/addcourses" element={<CreateCourse/>}></Route>
-                    <Route path="/tutorcourses/searchcourses" element={<SearchCourse/>}></Route>
-                    <Route path="/tutorcourses/udcourses" element={<UdCourse/>}></Route>
-                    <Route path="/tutorcourses/udcourses/edit/:id" element={<UpdateCourse/>}></Route>
-                    <Route path="/tutorcourses/udcourses/delete/:id" element={<DeleteCourse/>}></Route>
-                    <Route path="/tutorlogout" element={<TutorLogout/>}></Route>
-    */}
                 </Routes>
             </BrowserRouter>
         </div>

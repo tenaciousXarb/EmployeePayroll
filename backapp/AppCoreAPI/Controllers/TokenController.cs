@@ -9,6 +9,7 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class TokenController : ControllerBase
     {
+        #region all tokens api
         [Route("api/tokens")]
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -27,6 +28,10 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region token by key api
         [Route("api/tokens/{id}")]
         [HttpGet]
         public async Task<IActionResult> Get(string id)
@@ -46,6 +51,10 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region delete token api
         [Route("api/tokens/delete/{id}")]
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
@@ -64,6 +73,10 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region add token api
         [Route("api/tokens/create")]
         [HttpPost]
         public async Task<IActionResult> Add(TokenDTO obj)
@@ -82,6 +95,10 @@ namespace AppCoreAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region update token api
         [Route("api/tokens/update")]
         [HttpPost]
         public async Task<IActionResult> Update(TokenDTO obj)
@@ -99,6 +116,7 @@ namespace AppCoreAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        } 
+        #endregion
     }
 }

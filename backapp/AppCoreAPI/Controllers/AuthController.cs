@@ -9,6 +9,7 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class AuthController : ControllerBase
     {
+        #region admin logout
         [Route("api/logout")]
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -23,7 +24,11 @@ namespace AppCoreAPI.Controllers
                 }
             }
             return BadRequest("Invalid token to logout");
-        }
+        } 
+        #endregion
+
+
+        #region employee logout
         [Route("api/emp/logout")]
         [HttpGet]
         public async Task<IActionResult> EmpLogout()
@@ -38,14 +43,18 @@ namespace AppCoreAPI.Controllers
                 }
             }
             return BadRequest("Invalid token to logout");
-        }
+        } 
+        #endregion
+
+
+        #region authenticate admin
         [Route("api/login")]
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO login)
         {
             if (ModelState.IsValid)
             {
-                if(login.Username != null && login.Password != null)
+                if (login.Username != null && login.Password != null)
                 {
                     var token = await AuthService.AuthenticateAdmin(login.Username, login.Password);
 
@@ -67,7 +76,11 @@ namespace AppCoreAPI.Controllers
                 }
             }
             return BadRequest(ModelState);
-        }
+        } 
+        #endregion
+
+
+        #region authenticate employee
         [Route("api/employee/login")]
         [HttpPost]
         public async Task<IActionResult> EmpLogin(LoginDTO login)
@@ -92,9 +105,10 @@ namespace AppCoreAPI.Controllers
                     {
                         return BadRequest("Invalid username or password");
                     }
-                }                    
+                }
             }
             return BadRequest(ModelState);
-        }
+        } 
+        #endregion
     }
 }

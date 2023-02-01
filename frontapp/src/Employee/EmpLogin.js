@@ -25,13 +25,14 @@ const EmpLogin=()=>
         (
             (rsp)=>
             {
+                localStorage.setItem('_authToken',rsp.data.tkey);
+                localStorage.setItem('username',rsp.data.username);
+                localStorage.setItem('role',"employee");
                 setErr('');
                 axiosConfig.get(`/employees/getbyname/${Username}`)
                 .then(
                     (rsp)=>
                     {
-                        localStorage.setItem('_authToken',rsp.data.tkey);
-                        localStorage.setItem('username',rsp.data.username);
                         localStorage.setItem('id',rsp.data.id);
                         localStorage.setItem('name',rsp.data.name);
                         localStorage.setItem('address',rsp.data.address);

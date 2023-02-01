@@ -11,15 +11,16 @@ namespace EmployeePayroll.Controllers
     [EnableCors]
     public class EmployeeController : ControllerBase
     {
+        #region all employees api
         [Route("api/employees")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var data = await EmployeeService.Get();
-                if(data != null)
+                if (data != null)
                 {
                     if (data.Count == 0)
                     {
@@ -33,9 +34,13 @@ namespace EmployeePayroll.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region employee by name api
         [Route("api/employees/getbyname/{name}")]
         [HttpGet]
-        [Logged]
+        [LoggedEmployee]
         public async Task<IActionResult> GetByName(string name)
         {
             try
@@ -52,15 +57,19 @@ namespace EmployeePayroll.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region single employee api
         [Route("api/employees/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedAdmin]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var data = await EmployeeService.Get(id);
-                if(data != null)
+                if (data != null)
                 {
                     return Ok(data);
                 }
@@ -71,9 +80,13 @@ namespace EmployeePayroll.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region delete employee api
         [Route("api/employees/delete/{id}")]
         [HttpGet]
-        [Logged]
+        [LoggedEmployee]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -90,9 +103,13 @@ namespace EmployeePayroll.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+
+
+        #region add employee api
         [Route("api/employees/create")]
         [HttpPost]
-        public async Task<IActionResult> Add([Bind(nameof(EmployeeRegistrationDTO.Name))] EmployeeRegistrationDTO obj)
+        public async Task<IActionResult> Add(EmployeeRegistrationDTO obj)
         {
             if (ModelState.IsValid)
             {
@@ -105,21 +122,25 @@ namespace EmployeePayroll.Controllers
                     }
                     return UnprocessableEntity("Error occurred!");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
                 }
-                
+
             }
             return BadRequest(ModelState);
         }
+        #endregion
+
+
+        #region update employee api
         [Route("api/employees/update")]
         [HttpPost]
-        [Logged]
+        [LoggedEmployee]
         public async Task<IActionResult> Update(EmployeeDTO obj)
         {
             var e = await EmployeeService.Get(obj.Id);
-            if(e != null)
+            if (e != null)
             {
                 if (obj.Password == null)
                 {
@@ -170,6 +191,7 @@ namespace EmployeePayroll.Controllers
                 }
             }
             return BadRequest(ModelState);
-        }
+        } 
+        #endregion
     }        
 }
