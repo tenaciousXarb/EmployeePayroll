@@ -14,7 +14,8 @@ namespace AppCoreAPI.Controllers
         #region all admin api
         [Route("api/admins")]
         [HttpGet]
-        [Authorize]
+        //[Authorize]
+        [Authorize(Policy = "beingadmin")]
         public async Task<IActionResult> Get()
         {
             try
