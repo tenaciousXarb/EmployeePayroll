@@ -5,7 +5,7 @@ using BLL.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmployeePayroll.Controllers
+namespace AppCoreAPI.Controllers
 {
     [ApiController]
     [EnableCors]
@@ -14,7 +14,7 @@ namespace EmployeePayroll.Controllers
         #region all employees api
         [Route("api/employees")]
         [HttpGet]
-        [LoggedAdmin]
+
         public async Task<IActionResult> Get()
         {
             try
@@ -40,7 +40,7 @@ namespace EmployeePayroll.Controllers
         #region employee by name api
         [Route("api/employees/getbyname/{name}")]
         [HttpGet]
-        [LoggedEmployee]
+
         public async Task<IActionResult> GetByName(string name)
         {
             try
@@ -63,7 +63,7 @@ namespace EmployeePayroll.Controllers
         #region single employee api
         [Route("api/employees/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -86,7 +86,7 @@ namespace EmployeePayroll.Controllers
         #region delete employee api
         [Route("api/employees/delete/{id}")]
         [HttpGet]
-        [LoggedEmployee]
+
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -136,10 +136,10 @@ namespace EmployeePayroll.Controllers
         #region update employee api
         [Route("api/employees/update")]
         [HttpPost]
-        [LoggedEmployee]
+        //
         public async Task<IActionResult> Update(EmployeeDTO obj)
         {
-            var e = await EmployeeService.Get(obj.Id);
+            /*var e = await EmployeeService.Get(obj.Id);
             if (e != null)
             {
                 if (obj.Password == null)
@@ -170,7 +170,7 @@ namespace EmployeePayroll.Controllers
                     obj.Username = e.Username;
                     obj.RemLeave = e.RemLeave;
                 }
-            }
+            }*/
             if (ModelState.IsValid)
             {
                 var data = await EmployeeService.Edit(obj);
@@ -191,7 +191,7 @@ namespace EmployeePayroll.Controllers
                 }
             }
             return BadRequest(ModelState);
-        } 
+        }
         #endregion
-    }        
+    }
 }

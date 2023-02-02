@@ -22,8 +22,6 @@ public partial class EpProjectDbContext : DbContext
 
     public virtual DbSet<Employee> Employees { get; set; }
 
-    public virtual DbSet<Token> Tokens { get; set; }
-
     public virtual DbSet<Transaction> Transactions { get; set; }
 
     public virtual DbSet<Vacation> Vacations { get; set; }
@@ -101,22 +99,6 @@ public partial class EpProjectDbContext : DbContext
             entity.HasOne(d => d.Dept).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.DeptId)
                 .HasConstraintName("FK_Employees_Departments");
-        });
-
-        modelBuilder.Entity<Token>(entity =>
-        {
-            entity.Property(e => e.CreationTime).HasColumnType("datetime");
-            entity.Property(e => e.ExpirationTime).HasColumnType("datetime");
-            entity.Property(e => e.Post)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.Tkey)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("TKey");
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Transaction>(entity =>

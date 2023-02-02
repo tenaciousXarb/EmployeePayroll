@@ -13,7 +13,7 @@ namespace AppCoreAPI.Controllers
         #region all transactions api
         [Route("api/transactions")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get()
         {
             try
@@ -36,7 +36,7 @@ namespace AppCoreAPI.Controllers
         #region single transaction api
         [Route("api/transactions/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -59,7 +59,7 @@ namespace AppCoreAPI.Controllers
         #region delete transaction api
         [Route("api/transactions/delete/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace AppCoreAPI.Controllers
         #region add transaction api
         [Route("api/transactions/create")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Add(TransactionDTO obj)
         {
             try
@@ -105,7 +105,7 @@ namespace AppCoreAPI.Controllers
         #region update transaction api
         [Route("api/transactions/update")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Update(TransactionDTO obj)
         {
             try

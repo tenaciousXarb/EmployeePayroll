@@ -13,7 +13,7 @@ namespace AppCoreAPI.Controllers
         #region all departments api
         [Route("api/departments")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get()
         {
             try
@@ -36,7 +36,7 @@ namespace AppCoreAPI.Controllers
         #region single department api
         [Route("api/departments/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -59,7 +59,7 @@ namespace AppCoreAPI.Controllers
         #region delete department api
         [Route("api/departments/delete/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace AppCoreAPI.Controllers
         #region add department api
         [Route("api/departments/create")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Add(DepartmentDTO obj)
         {
             try
@@ -105,7 +105,7 @@ namespace AppCoreAPI.Controllers
         #region update department api
         [Route("api/departments/update")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Update(DepartmentDTO obj)
         {
             try

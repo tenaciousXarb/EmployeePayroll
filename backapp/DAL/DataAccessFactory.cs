@@ -14,10 +14,6 @@ namespace DAL
         {
             return new DepartmentRepo();
         }
-        public static IRepo<Token, string, Token> TokenDataAccess()
-        {
-            return new TokenRepo();
-        }
         public static IRepo<Admin, int, Admin> AdminDataAccess()
         {
             return new AdminRepo();

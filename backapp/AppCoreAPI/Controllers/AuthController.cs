@@ -9,6 +9,12 @@ namespace AppCoreAPI.Controllers
     [EnableCors]
     public class AuthController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+
+        public AuthController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         #region admin logout
         [Route("api/logout")]
         [HttpGet]
@@ -56,7 +62,7 @@ namespace AppCoreAPI.Controllers
             {
                 if (login.Username != null && login.Password != null)
                 {
-                    var token = await AuthService.AuthenticateAdmin(login.Username, login.Password);
+                    var token = await new AuthService().AuthenticateAdmin(login.Username, login.Password);
 
                     if (token != null)
                     {
@@ -89,7 +95,7 @@ namespace AppCoreAPI.Controllers
             {
                 if (login.Username != null && login.Password != null)
                 {
-                    var token = await AuthService.AuthenticateEmployee(login.Username, login.Password);
+                    var token = await new AuthService().AuthenticateEmployee(login.Username, login.Password);
                     if (token != null)
                     {
                         try

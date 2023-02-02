@@ -1,6 +1,7 @@
 ﻿using AppCoreAPI.Authentication;
 using BLL.DTO.MainDTO;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace AppCoreAPI.Controllers
         #region all admin api
         [Route("api/admins")]
         [HttpGet]
-        [LoggedAdmin]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             try
@@ -36,7 +37,7 @@ namespace AppCoreAPI.Controllers
         #region single admin api
         [Route("api/admins/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -59,7 +60,7 @@ namespace AppCoreAPI.Controllers
         #region delete admin api
         [Route("api/admins/delete/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -82,7 +83,7 @@ namespace AppCoreAPI.Controllers
         #region add admin api
         [Route("api/admins/create")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Add(AdminDTO obj)
         {
             if (ModelState.IsValid)
@@ -109,7 +110,7 @@ namespace AppCoreAPI.Controllers
         #region update admin api
         [Route("api/admins/update")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Update(AdminDTO obj)
         {
             if (obj.Password == null)

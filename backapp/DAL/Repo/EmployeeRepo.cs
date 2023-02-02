@@ -72,12 +72,13 @@ namespace DAL.Repo
 
         public async Task<bool> Logout(string token)
         {
-            var tk = await db.Tokens.FirstOrDefaultAsync(x => x.Tkey == token);
+            /*var tk = await db.Tokens.FirstOrDefaultAsync(x => x.Tkey == token);
             if (tk != null)
             {
                 tk.ExpirationTime = DateTime.Now;
             }
-            return await db.SaveChangesAsync()>0;
+            return await db.SaveChangesAsync()>0;*/
+            return false;
         }
     }
 }

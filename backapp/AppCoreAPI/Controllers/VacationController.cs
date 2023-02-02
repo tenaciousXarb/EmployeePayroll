@@ -13,7 +13,7 @@ namespace AppCoreAPI.Controllers
         #region all leaves api
         [Route("api/vacations")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get()
         {
             try
@@ -36,7 +36,7 @@ namespace AppCoreAPI.Controllers
         #region single leave api
         [Route("api/vacations/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -59,7 +59,7 @@ namespace AppCoreAPI.Controllers
         #region delete leave api
         [Route("api/vacations/delete/{id}")]
         [HttpGet]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace AppCoreAPI.Controllers
         #region add leave api
         [Route("api/vacations/create")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Add(VacationDTO obj)
         {
             try
@@ -105,7 +105,7 @@ namespace AppCoreAPI.Controllers
         #region leave status update api
         [Route("api/vacations/update/{value}")]
         [HttpPost]
-        [LoggedAdmin]
+        
         public async Task<IActionResult> Update(VacationDTO obj, int value)
         {
             try

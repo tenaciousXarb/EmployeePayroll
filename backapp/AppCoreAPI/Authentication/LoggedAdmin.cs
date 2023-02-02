@@ -8,7 +8,7 @@ namespace AppCoreAPI.Authentication
     {
         public async void OnAuthorization(AuthorizationFilterContext context)
         {
-            string? token = context.HttpContext.Request.Headers.Authorization;
+            /*string? token = context.HttpContext.Request.Headers.Authorization;
             string? role = context.HttpContext.Request.Headers.Allow;
 
             if (token == null)
@@ -26,7 +26,7 @@ namespace AppCoreAPI.Authentication
                 {
                     context.Result = new UnauthorizedResult();
                 }
-            }
+            }*/
         }
     }
 }
