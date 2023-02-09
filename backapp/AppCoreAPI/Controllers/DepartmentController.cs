@@ -1,18 +1,13 @@
-﻿using AppCoreAPI.Authentication;
-using BLL.DTO.MainDTO;
+﻿using BLL.DTO.MainDTO;
 using BLL.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class DepartmentController : ControllerBase
+    public class DepartmentController : BaseApiController
     {
         #region all departments api
-        [Route("api/departments")]
-        [HttpGet]
+        [HttpGet("api/departments")]
         
         public async Task<IActionResult> Get()
         {
@@ -34,8 +29,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region single department api
-        [Route("api/departments/{id}")]
-        [HttpGet]
+        [HttpGet("api/departments/{id}")]
         
         public async Task<IActionResult> Get(int id)
         {
@@ -57,8 +51,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region delete department api
-        [Route("api/departments/delete/{id}")]
-        [HttpGet]
+        [HttpGet("api/departments/delete/{id}")]
         
         public async Task<IActionResult> Delete(int id)
         {
@@ -80,8 +73,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region add department api
-        [Route("api/departments/create")]
-        [HttpPost]
+        [HttpPost("api/departments/create")]
         
         public async Task<IActionResult> Add(DepartmentDTO obj)
         {
@@ -103,8 +95,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region update department api
-        [Route("api/departments/update")]
-        [HttpPost]
+        [HttpPost("api/departments/update")]
         
         public async Task<IActionResult> Update(DepartmentDTO obj)
         {

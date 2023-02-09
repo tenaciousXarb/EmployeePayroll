@@ -1,19 +1,16 @@
-﻿using AppCoreAPI.Authentication;
-using BLL.DTO.MainDTO;
+﻿using BLL.DTO.MainDTO;
 using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Serilog;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class AdminController : ControllerBase
+    public class AdminController : BaseApiController
     {
         #region all admin api
-        [Route("api/admins")]
-        [HttpGet]
         /// <summary>
         /// Get all admins
         /// </summary>
@@ -23,16 +20,17 @@ namespace AppCoreAPI.Controllers
         [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
         //[Authorize]
         [Authorize(Policy = "beingadmin")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAllAdmins()
         {
             try
             {
+                Log.Information("GetAllAdmins");
                 var data = await AdminService.Get();
                 if (data != null)
                 {
                     return Ok(data);
                 }
-                return UnprocessableEntity("No data");
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -43,10 +41,6 @@ namespace AppCoreAPI.Controllers
 
 
         #region single admin api
-        [Route("api/admins/{id}")]
-        [HttpGet]
-        
-        public async Task<IActionResult> Get(int id)
         /// <summary>
         /// Get admin by id
         /// </summary>
@@ -58,6 +52,7 @@ namespace AppCoreAPI.Controllers
 
         public async Task<IActionResult> GetAdminById(int id)
         {
+            Log.Information($"GetAdminById | ID: {id}");
             try
             {
                 var data = await AdminService.Get(id);
@@ -65,7 +60,7 @@ namespace AppCoreAPI.Controllers
                 {
                     return Ok(data);
                 }
-                return UnprocessableEntity("No data");
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -76,10 +71,6 @@ namespace AppCoreAPI.Controllers
 
 
         #region delete admin api
-        [Route("api/admins/delete/{id}")]
-        [HttpGet]
-        
-        public async Task<IActionResult> Delete(int id)
         /// <summary>
         /// Delete admin by id
         /// </summary>
@@ -87,15 +78,18 @@ namespace AppCoreAPI.Controllers
         /// <returns></returns>
         [HttpDelete("api/admins/delete/{id}")]
         [SwaggerResponse(statusCode: StatusCodes.Status200OK)]
+
+        public async Task<IActionResult> DeleteAdmin(int id)
         {
+            Log.Information($"DeleteAdmin | ID: {id}");
             try
             {
                 var data = await AdminService.Delete(id);
                 if (data)
                 {
-                    return Ok(data);
+                    return Ok();
                 }
-                return StatusCode(520);
+                return BadRequest();
             }
             catch (Exception ex)
             {
@@ -106,10 +100,6 @@ namespace AppCoreAPI.Controllers
 
 
         #region add admin api
-        [Route("api/admins/create")]
-        [HttpPost]
-        
-        public async Task<IActionResult> Add(AdminDTO obj)
         /// <summary>
         /// Add Admin
         /// </summary>
@@ -117,17 +107,16 @@ namespace AppCoreAPI.Controllers
         /// <returns></returns>
         [HttpPost("api/admins/create")]
         [SwaggerResponse(statusCode: StatusCodes.Status201Created, type: typeof(AdminDTO))]
+
+        public async Task<IActionResult> AddAdmin(AdminDTO obj)
         {
+            Log.Information($"AddAdmin | Admin: {JsonConvert.SerializeObject(obj)}");
             if (ModelState.IsValid)
             {
                 try
                 {
                     var data = await AdminService.Edit(obj);
-                    if (data != null)
-                    {
-                        return Ok(data);
-                    }
-                    return BadRequest("Not found");
+                    return StatusCode(StatusCodes.Status201Created, data);
                 }
                 catch (Exception ex)
                 {
@@ -140,10 +129,6 @@ namespace AppCoreAPI.Controllers
 
 
         #region update admin api
-        [Route("api/admins/update")]
-        [HttpPost]
-        
-        public async Task<IActionResult> Update(AdminDTO obj)
         /// <summary>
         /// Update an admin
         /// </summary>
@@ -151,7 +136,10 @@ namespace AppCoreAPI.Controllers
         /// <returns></returns>
         [HttpPut("api/admins/update")]
         [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(AdminDTO))]
+
+        public async Task<IActionResult> UpdateAdmin(AdminDTO obj)
         {
+            Log.Information($"UpdateAdmin | Admin: {obj.Id}");
             if (obj.Password == null)
             {
                 var s = await AdminService.Get(obj.Id);
@@ -169,7 +157,7 @@ namespace AppCoreAPI.Controllers
                     {
                         return Ok(data);
                     }
-                    return UnprocessableEntity("Not found");
+                    return BadRequest();
                 }
                 catch (Exception ex)
                 {

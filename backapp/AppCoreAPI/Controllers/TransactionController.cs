@@ -1,18 +1,13 @@
-﻿using AppCoreAPI.Authentication;
-using BLL.DTO.MainDTO;
+﻿using BLL.DTO.MainDTO;
 using BLL.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class TransactionController : ControllerBase
+    public class TransactionController : BaseApiController
     {
         #region all transactions api
-        [Route("api/transactions")]
-        [HttpGet]
+        [HttpGet("api/transactions")]
         
         public async Task<IActionResult> Get()
         {
@@ -34,8 +29,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region single transaction api
-        [Route("api/transactions/{id}")]
-        [HttpGet]
+        [HttpGet("api/transactions/{id}")]
         
         public async Task<IActionResult> Get(int id)
         {
@@ -57,8 +51,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region delete transaction api
-        [Route("api/transactions/delete/{id}")]
-        [HttpGet]
+        [HttpGet("api/transactions/delete/{id}")]
         
         public async Task<IActionResult> Delete(int id)
         {
@@ -80,8 +73,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region add transaction api
-        [Route("api/transactions/create")]
-        [HttpPost]
+        [HttpPost("api/transactions/create")]
         
         public async Task<IActionResult> Add(TransactionDTO obj)
         {
@@ -103,8 +95,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region update transaction api
-        [Route("api/transactions/update")]
-        [HttpPost]
+        [HttpPost("api/transactions/update")]
         
         public async Task<IActionResult> Update(TransactionDTO obj)
         {

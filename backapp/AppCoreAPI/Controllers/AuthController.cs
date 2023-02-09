@@ -1,23 +1,13 @@
 ﻿using BLL.DTO.FormDTO;
 using BLL.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
-        private readonly IConfiguration _configuration;
-
-        public AuthController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
         #region admin logout
-        [Route("api/logout")]
-        [HttpGet]
+        [HttpGet("api/logout")]
         public async Task<IActionResult> Logout()
         {
             var token = Request.Headers.Authorization.ToString();
@@ -35,8 +25,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region employee logout
-        [Route("api/emp/logout")]
-        [HttpGet]
+        [HttpGet("api/emp/logout")]
         public async Task<IActionResult> EmpLogout()
         {
             var token = Request.Headers.Authorization.ToString();
@@ -54,8 +43,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region authenticate admin
-        [Route("api/login")]
-        [HttpPost]
+        [HttpPost("api/login")]
         public async Task<IActionResult> Login(LoginDTO login)
         {
             if (ModelState.IsValid)
@@ -87,8 +75,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region authenticate employee
-        [Route("api/employee/login")]
-        [HttpPost]
+        [HttpPost("api/employee/login")]
         public async Task<IActionResult> EmpLogin(LoginDTO login)
         {
             if (ModelState.IsValid)

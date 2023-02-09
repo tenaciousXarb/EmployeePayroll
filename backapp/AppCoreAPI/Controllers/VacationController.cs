@@ -1,18 +1,13 @@
-﻿using AppCoreAPI.Authentication;
-using BLL.DTO.MainDTO;
+﻿using BLL.DTO.MainDTO;
 using BLL.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class VacationController : ControllerBase
+    public class VacationController : BaseApiController
     {
         #region all leaves api
-        [Route("api/vacations")]
-        [HttpGet]
+        [HttpGet("api/vacations")]
         
         public async Task<IActionResult> Get()
         {
@@ -34,8 +29,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region single leave api
-        [Route("api/vacations/{id}")]
-        [HttpGet]
+        [HttpGet("api/vacations/{id}")]
         
         public async Task<IActionResult> Get(int id)
         {
@@ -57,8 +51,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region delete leave api
-        [Route("api/vacations/delete/{id}")]
-        [HttpGet]
+        [HttpGet("api/vacations/delete/{id}")]
         
         public async Task<IActionResult> Delete(int id)
         {
@@ -80,8 +73,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region add leave api
-        [Route("api/vacations/create")]
-        [HttpPost]
+        [HttpPost("api/vacations/create")]
         
         public async Task<IActionResult> Add(VacationDTO obj)
         {
@@ -102,9 +94,8 @@ namespace AppCoreAPI.Controllers
         #endregion
 
 
-        #region leave status update api
-        [Route("api/vacations/update/{value}")]
-        [HttpPost]
+        #region leave status update apiS
+        [HttpPost("api/vacations/update/{value}")]
         
         public async Task<IActionResult> Update(VacationDTO obj, int value)
         {

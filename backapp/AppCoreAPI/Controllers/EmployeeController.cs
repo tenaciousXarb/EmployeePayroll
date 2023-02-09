@@ -1,19 +1,14 @@
-﻿using AppCoreAPI.Authentication;
-using BLL.DTO.FormDTO;
+﻿using BLL.DTO.FormDTO;
 using BLL.DTO.MainDTO;
 using BLL.Services;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppCoreAPI.Controllers
 {
-    [ApiController]
-    [EnableCors]
-    public class EmployeeController : ControllerBase
+    public class EmployeeController : BaseApiController
     {
         #region all employees api
-        [Route("api/employees")]
-        [HttpGet]
+        [HttpGet("api/employees")]
 
         public async Task<IActionResult> Get()
         {
@@ -38,8 +33,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region employee by name api
-        [Route("api/employees/getbyname/{name}")]
-        [HttpGet]
+        [HttpGet("api/employees/getbyname/{name}")]
 
         public async Task<IActionResult> GetByName(string name)
         {
@@ -61,8 +55,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region single employee api
-        [Route("api/employees/{id}")]
-        [HttpGet]
+        [HttpGet("api/employees/{id}")]
 
         public async Task<IActionResult> Get(int id)
         {
@@ -84,8 +77,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region delete employee api
-        [Route("api/employees/delete/{id}")]
-        [HttpGet]
+        [HttpGet("api/employees/delete/{id}")]
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -107,8 +99,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region add employee api
-        [Route("api/employees/create")]
-        [HttpPost]
+        [HttpPost("api/employees/create")]
         public async Task<IActionResult> Add(EmployeeRegistrationDTO obj)
         {
             if (ModelState.IsValid)
@@ -134,9 +125,7 @@ namespace AppCoreAPI.Controllers
 
 
         #region update employee api
-        [Route("api/employees/update")]
-        [HttpPost]
-        //
+        [HttpPost("api/employees/update")]
         public async Task<IActionResult> Update(EmployeeDTO obj)
         {
             /*var e = await EmployeeService.Get(obj.Id);
