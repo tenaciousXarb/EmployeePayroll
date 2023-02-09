@@ -1,13 +1,31 @@
-
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
+using Serilog.Events;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+/*builder.Host.ConfigureLogging(loggingProvider =>
+{
+    loggingProvider.ClearProviders();
+    loggingProvider.AddConsole();
+    loggingProvider.AddDebug();
+    loggingProvider.AddEventLog();
+});*/
+
+builder.Host.UseSerilog((HostBuilderContext context, LoggerConfiguration loggerConfiguration) =>
+{
+    loggerConfiguration.WriteTo.Console();
+    loggerConfiguration.WriteTo.File(path: "logs/applogs.txt", rollingInterval: RollingInterval.Day, fileSizeLimitBytes: 1048576, rollOnFileSizeLimit: true);
+    loggerConfiguration.WriteTo.Seq(serverUrl: "http://localhost:5341/", restrictedToMinimumLevel: LogEventLevel.Debug);
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+});
+
 
 builder.Services.AddCors(options =>
 {
