@@ -27,7 +27,6 @@ const Login=()=>
             (rsp)=>
             {
                 localStorage.setItem('_authToken',rsp.data.tkey);
-                localStorage.setItem('role',"admin");
                 localStorage.setItem('username',rsp.data.username);
                 setErr('');
                 console.log(rsp.data);
