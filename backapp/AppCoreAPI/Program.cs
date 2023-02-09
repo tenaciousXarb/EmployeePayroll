@@ -44,6 +44,9 @@ builder.Services.AddSwaggerGen(x =>
             new List<string>()
         }
     });
+
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication(options =>

@@ -14,6 +14,13 @@ namespace AppCoreAPI.Controllers
         #region all admin api
         [Route("api/admins")]
         [HttpGet]
+        /// <summary>
+        /// Get all admins
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("api/admins")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(List<AdminDTO>))]
+        [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
         //[Authorize]
         [Authorize(Policy = "beingadmin")]
         public async Task<IActionResult> Get()
@@ -40,6 +47,16 @@ namespace AppCoreAPI.Controllers
         [HttpGet]
         
         public async Task<IActionResult> Get(int id)
+        /// <summary>
+        /// Get admin by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("api/admins/{id}")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(AdminDTO))]
+        [SwaggerResponse(statusCode: StatusCodes.Status204NoContent)]
+
+        public async Task<IActionResult> GetAdminById(int id)
         {
             try
             {
@@ -63,6 +80,13 @@ namespace AppCoreAPI.Controllers
         [HttpGet]
         
         public async Task<IActionResult> Delete(int id)
+        /// <summary>
+        /// Delete admin by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("api/admins/delete/{id}")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK)]
         {
             try
             {
@@ -86,6 +110,13 @@ namespace AppCoreAPI.Controllers
         [HttpPost]
         
         public async Task<IActionResult> Add(AdminDTO obj)
+        /// <summary>
+        /// Add Admin
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost("api/admins/create")]
+        [SwaggerResponse(statusCode: StatusCodes.Status201Created, type: typeof(AdminDTO))]
         {
             if (ModelState.IsValid)
             {
@@ -113,6 +144,13 @@ namespace AppCoreAPI.Controllers
         [HttpPost]
         
         public async Task<IActionResult> Update(AdminDTO obj)
+        /// <summary>
+        /// Update an admin
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPut("api/admins/update")]
+        [SwaggerResponse(statusCode: StatusCodes.Status200OK, type: typeof(AdminDTO))]
         {
             if (obj.Password == null)
             {
